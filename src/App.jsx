@@ -1,18 +1,22 @@
 import { useEffect } from "react";
-import { io } from "socket.io-client";
+import { socket } from "./socket";
+import ChatForm from "./components/ChatForm";
 function App() {
   useEffect(() => {
-    const socket = io("http://localhost:3000/");
     socket.on("connect", () => {
       console.log("Client is connected successfully to server via web socket");
     });
     socket.on("disconnect", () => {
       console.log("Client is disconnected from server");
     });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
   return (
     <>
-      <h1>Hello</h1>
+      <ChatForm />
     </>
   );
 }
