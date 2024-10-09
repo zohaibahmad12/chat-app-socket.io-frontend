@@ -1,5 +1,4 @@
-// App.js
-import React, { useState } from "react";
+import { useState } from "react";
 import Sidebar from "./components/Chat/Sidebar";
 import ChatWindow from "./components/Chat/ChatWindow";
 
@@ -18,10 +17,7 @@ const App = () => {
 
   return (
     <div className="h-screen flex bg-gray-100">
-      {/* Sidebar */}
       <Sidebar onSelectChat={setSelectedChat} />
-
-      {/* Chat Window */}
       <div className="flex-1 h-full">
         <ChatWindow chat={selectedChat} />
       </div>

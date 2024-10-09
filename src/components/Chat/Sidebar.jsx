@@ -8,21 +8,21 @@ const Sidebar = () => {
     { name: "Vlad", message: "Thanks for the help!", time: "30 mins ago", online: true, status: "delivered" },
     { name: "Oleg", message: "Sure, let’s do it.", time: "1 hour ago", unread: true, online: false, status: "viewed" },
   ];
-
   const groupChats = [
     { name: "Developers", message: "Meeting is scheduled at 5.", time: "2 mins ago", online: true, status: "sent" },
     { name: "Family", message: "Dinner at 7?", time: "15 mins ago", online: false, status: "delivered" },
   ];
 
   return (
-    <div className="w-1/4 bg-gray-900 text-white flex flex-col shadow-lg overflow-y-auto">
-      {/* Header */}
-      <SidebarHeader />
+    <div className="w-1/4 bg-gradient-to-b from-gray-800 to-gray-900 text-white flex flex-col shadow-lg h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+      <SidebarHeader className="sticky top-0 z-10 bg-gray-900" />
 
-      {/* Chat Sections */}
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-4 space-y-4">
         <SidebarChatList title="Individual Chats" chats={individualChats} />
-        <SidebarChatList title="Group Chats" chats={groupChats} />
+        <div className="border-t border-gray-700 mt-4 pt-4">
+          {" "}
+          <SidebarChatList title="Group Chats" chats={groupChats} />
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-// ChatMessageList.js
 import ChatMessage from "./ChatMessage";
 
 const ChatMessageList = ({ messages }) => {

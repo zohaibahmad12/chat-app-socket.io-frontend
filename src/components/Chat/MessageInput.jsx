@@ -1,4 +1,3 @@
-// MessageInput.js
 const MessageInput = () => {
   return (
     <div className="p-4 bg-white border-t border-gray-300 flex items-center">
