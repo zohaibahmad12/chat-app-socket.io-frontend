@@ -1,24 +1,32 @@
-import { useEffect } from "react";
-import { socket } from "./socket";
-import ChatForm from "./components/ChatForm";
-function App() {
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Client is connected successfully to server via web socket");
-    });
-    socket.on("disconnect", () => {
-      console.log("Client is disconnected from server");
-    });
+// App.js
+import React, { useState } from "react";
+import Sidebar from "./components/Chat/Sidebar";
+import ChatWindow from "./components/Chat/ChatWindow";
 
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+const App = () => {
+  const [selectedChat, setSelectedChat] = useState({
+    name: "Ivan",
+    email: "ivan@example.com",
+    online: true,
+    lastSeen: "10 mins ago",
+    messages: [
+      { text: "Hey, how's it going?", time: "3 mins ago", isSender: false, status: "viewed" },
+      { text: "All good, you?", time: "2 mins ago", isSender: true, status: "viewed" },
+      { text: "I'm doing great!", time: "1 min ago", isSender: false, status: "delivered" },
+    ],
+  });
+
   return (
-    <>
-      <ChatForm />
-    </>
+    <div className="h-screen flex bg-gray-100">
+      {/* Sidebar */}
+      <Sidebar onSelectChat={setSelectedChat} />
+
+      {/* Chat Window */}
+      <div className="flex-1 h-full">
+        <ChatWindow chat={selectedChat} />
+      </div>
+    </div>
   );
-}
+};
 
 export default App;
