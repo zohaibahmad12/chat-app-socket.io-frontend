@@ -15,9 +15,9 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-1/4 bg-gradient-to-b from-gray-800 via-gray-800 to-gray-900 text-white flex flex-col shadow-lg h-full">
-      <SidebarHeader className="sticky top-0 z-10" />
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+    <div className="w-1/4 bg-gray-800 text-white flex flex-col shadow-lg h-full">
+      <SidebarHeader />
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
         <SidebarChatList title="Individual Chats" chats={individualChats} />
         <div className="border-t border-gray-700 mt-4 pt-4">
           <SidebarChatList title="Group Chats" chats={groupChats} />

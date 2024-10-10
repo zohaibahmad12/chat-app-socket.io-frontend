@@ -2,7 +2,7 @@ import { FaPaperPlane } from "react-icons/fa"; // Import the send message icon
 
 const MessageInput = () => {
   return (
-    <div className="p-4 bg-gradient-to-b from-gray-800 via-gray-800 to-gray-900 border-t border-gray-700 flex items-center">
+    <div className="p-4 bg-gray-900 border-t border-gray-700 flex items-center">
       <input
         type="text"
         placeholder="Type a message..."

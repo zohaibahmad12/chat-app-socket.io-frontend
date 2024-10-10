@@ -1,11 +1,18 @@
 import { useState } from "react";
 import Sidebar from "./components/Chat/Sidebar";
 import ChatWindow from "./components/Chat/ChatWindow";
-
+import useSocket from "./hooks/useSocket";
+import useUserStore from "./store/useUserStore";
 const App = () => {
+  useSocket();
+  const user = useUserStore((state) => state.user);
+  const socket = useUserStore((state) => state.socket);
+
+  console.log("user is", user);
+  console.log("socket is", socket);
   const [selectedChat, setSelectedChat] = useState({
-    name: "Ivan",
-    email: "ivan@example.com",
+    name: "Zain",
+    email: "zain@gmail.com",
     online: true,
     lastSeen: "10 mins ago",
     messages: [
