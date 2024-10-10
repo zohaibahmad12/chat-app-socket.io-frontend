@@ -3,10 +3,12 @@ import Sidebar from "./components/Chat/Sidebar";
 import ChatWindow from "./components/Chat/ChatWindow";
 import useSocket from "./hooks/useSocket";
 import useUserStore from "./store/useUserStore";
+import useChatStore from "./store/useChatStore";
 const App = () => {
   useSocket();
   const user = useUserStore((state) => state.user);
   const socket = useUserStore((state) => state.socket);
+  const allIndividualChats = useChatStore((state) => state.allIndividualChats);
 
   console.log("user is", user);
   console.log("socket is", socket);

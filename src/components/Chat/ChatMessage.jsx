@@ -2,7 +2,6 @@ import { FaCheck, FaCheckDouble } from "react-icons/fa";
 
 const ChatMessage = ({ isSender, message, time, status }) => {
   const getStatusIcon = () => {
-    console.log("status", status);
     if (status === "sent") return <FaCheck className="text-gray-300" />;
     if (status === "delivered") return <FaCheckDouble className="text-gray-300" />;
     if (status === "viewed") return <FaCheckDouble className="text-white" />;
