@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/Chat/Sidebar";
 import ChatWindow from "./components/Chat/ChatWindow";
 import useSocket from "./hooks/useSocket";
@@ -6,12 +6,16 @@ import useUserStore from "./store/useUserStore";
 import useChatStore from "./store/useChatStore";
 const App = () => {
   useSocket();
-  const user = useUserStore((state) => state.user);
-  const socket = useUserStore((state) => state.socket);
-  const allIndividualChats = useChatStore((state) => state.allIndividualChats);
+  const setUser = useUserStore((state) => state.setUser);
+  const setAllIndividualChats = useChatStore((state) => state.setAllIndividualChats);
+  const userObj = JSON.parse(localStorage.getItem("user"));
 
-  console.log("user is", user);
-  console.log("socket is", socket);
+  useEffect(() => {
+    if (!userObj) return;
+    setUser(userObj);
+    setAllIndividualChats(userObj.currentChats);
+  }, []);
+
   const [selectedChat, setSelectedChat] = useState({
     name: "Zain",
     email: "zain@gmail.com",
