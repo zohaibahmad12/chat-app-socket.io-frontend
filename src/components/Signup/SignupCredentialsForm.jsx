@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import signupFormSchema from "../../schemas/formSchemas";
+import { signupFormSchema } from "../../schemas/formSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 const CredentialsForm = () => {
   const {
