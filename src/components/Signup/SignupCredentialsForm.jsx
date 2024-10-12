@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import { signupFormSchema } from "../../schemas/formSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TailSpin } from "react-loader-spinner";
+import CustomToast from "../global/CustomToast";
+import axios from "axios";
 const SignUpCredentialsForm = () => {
   const {
     register,
@@ -10,11 +13,22 @@ const SignUpCredentialsForm = () => {
   } = useForm({ resolver: zodResolver(signupFormSchema), mode: "onBlur" });
 
   const onSignupFormSubmit = async (data) => {
-    console.log("form submitted", data);
+    try {
+      const response = await axios.post("http://localhost:3000/user/signup", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Signup successful:", response.data);
+    } catch (error) {
+      console.error("Error during signup:", error.message);
+      setError("root", { message: "Something went wrong" });
+    }
   };
-
+  console.log("errors", errors);
   return (
     <form className="mt-4" onSubmit={handleSubmit(onSignupFormSubmit)}>
+      {errors.root && <CustomToast message={errors.root.message} />}
       <div className="mb-3">
         <label htmlFor="name" className="block text-sm font-medium text-gray-300">
           Name
@@ -64,7 +78,7 @@ const SignUpCredentialsForm = () => {
       </div>
 
       <button type="submit" className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200">
-        {isSubmitting ? "Signing Up..." : "SignUp"}
+        {isSubmitting ? <TailSpin height={24} width={24} color="#ffffff" ariaLabel="tail-spin-loading" radius="1" visible={true} /> : "SignUp"}
       </button>
     </form>
   );
