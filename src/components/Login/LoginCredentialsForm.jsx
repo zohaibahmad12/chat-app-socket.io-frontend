@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const LoginCredentialsForm = () => {
   const setSessionToken = useUserStore((state) => state.setSessionToken);
   const setIsAuthenticated = useUserStore((state) => state.setIsAuthenticated);
+  const setUser = useUserStore((state) => state.setUser);
   const navigate = useNavigate();
   const {
     register,
@@ -28,6 +29,7 @@ const LoginCredentialsForm = () => {
       console.log("Login successful:", response.data);
       setIsAuthenticated(true);
       setSessionToken(response.data.token);
+      setUser(response.data.user);
       setToken(response.data.token);
       navigate("/");
     } catch (error) {
