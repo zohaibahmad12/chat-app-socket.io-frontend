@@ -1,7 +1,16 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormSchema } from "../../schemas/formSchemas";
+import axios from "axios";
+import CustomToast from "../global/CustomToast";
+import { TailSpin } from "react-loader-spinner";
+import { setToken } from "../../../utils/localStorage";
+import useUserStore from "../../store/useUserStore";
+import { useNavigate } from "react-router-dom";
 const LoginCredentialsForm = () => {
+  const setSessionToken = useUserStore((state) => state.setSessionToken);
+  const setIsAuthenticated = useUserStore((state) => state.setIsAuthenticated);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -9,11 +18,26 @@ const LoginCredentialsForm = () => {
     formState: { isSubmitting, errors },
   } = useForm({ resolver: zodResolver(loginFormSchema), mode: "onBlur" });
 
-  const onLoginFormSubmit = (data) => {
-    console.log("form submitted", data);
+  const onLoginFormSubmit = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:3000/user/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Login successful:", response.data);
+      setIsAuthenticated(true);
+      setSessionToken(response.data.token);
+      setToken(response.data.token);
+      navigate("/");
+    } catch (error) {
+      console.error("Error during login:", error);
+      setError("root", { message: error.response.data.message });
+    }
   };
   return (
     <form className="mt-6" onSubmit={handleSubmit(onLoginFormSubmit)}>
+      {errors.root && <CustomToast message={errors.root.message} />}
       <div className="mb-3">
         <label htmlFor="email" className="block text-sm font-medium text-gray-300">
           Email
@@ -46,8 +70,8 @@ const LoginCredentialsForm = () => {
         </p>
       </div>
 
-      <button type="submit" className="w-full py-2 mt-4 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200">
-        {isSubmitting ? "Logging In..." : "Login"}
+      <button type="submit" className="flex items-center justify-center w-full px-4 py-2 text-white bg-blue-600 rounded-md" disabled={isSubmitting}>
+        {isSubmitting ? <TailSpin height={24} width={24} color="#ffffff" ariaLabel="tail-spin-loading" radius="1" visible={true} /> : "Login"}
       </button>
     </form>
   );

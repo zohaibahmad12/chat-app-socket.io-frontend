@@ -21,11 +21,10 @@ const SignUpCredentialsForm = () => {
       });
       console.log("Signup successful:", response.data);
     } catch (error) {
-      console.error("Error during signup:", error.message);
-      setError("root", { message: "Something went wrong" });
+      console.error("Error during signup:", error);
+      setError("root", { message: error.response.data.message });
     }
   };
-  console.log("errors", errors);
   return (
     <form className="mt-4" onSubmit={handleSubmit(onSignupFormSubmit)}>
       {errors.root && <CustomToast message={errors.root.message} />}
@@ -77,7 +76,7 @@ const SignUpCredentialsForm = () => {
         </p>
       </div>
 
-      <button type="submit" className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200">
+      <button type="submit" className="flex items-center justify-center w-full px-4 py-2 text-white bg-blue-600 rounded-md" disabled={isSubmitting}>
         {isSubmitting ? <TailSpin height={24} width={24} color="#ffffff" ariaLabel="tail-spin-loading" radius="1" visible={true} /> : "SignUp"}
       </button>
     </form>
