@@ -31,6 +31,7 @@ const ProtectedRoute = ({ element: Element }) => {
         setSessionToken(token);
         setIsAuthenticated(true);
       } catch (error) {
+        console.log("token error", error);
         setIsAuthenticated(false);
       }
     };

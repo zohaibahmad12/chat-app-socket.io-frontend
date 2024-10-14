@@ -2,27 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Add this to your global CSS */
-.scrollbar-thin {
-  scrollbar-width: thin; /* Firefox */
-}
-.scrollbar-thumb-black {
-  background-color: #1f1f1f; /* Darker black for the scrollbar thumb */
-}
-.scrollbar-track-black {
-  background-color: #2b2b2b; /* Slightly lighter black for the scrollbar track */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
 }
 
-/* For Webkit browsers (Chrome, Safari) */
-::-webkit-scrollbar {
-  width: 2px;
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #272626; 
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #1f1f1f; /* Darker black for the scrollbar thumb */
-  border-radius: 10px;
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #0e0202; 
+  border-radius: 10px; 
 }
 
-::-webkit-scrollbar-track {
-  background: #2b2b2b; /* Slightly lighter black for the scrollbar track */
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: #777; 
 }
