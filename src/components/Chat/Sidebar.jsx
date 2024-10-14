@@ -1,7 +1,8 @@
 import SidebarChatList from "./SidebarChatList";
 import SidebarHeader from "./SidebarHeader";
-
+import useChatStore from "../../store/useChatStore";
 const Sidebar = () => {
+  const allIndividualChats = useChatStore((state) => state.allIndividualChats);
   const individualChats = [
     { name: "Ivan", message: "Hey, how's it going?", time: "3 mins ago", unread: true, online: true, status: "sent" },
     { name: "Daniel", message: "Are we still on for today?", time: "10 mins ago", online: false, status: "viewed" },
@@ -14,13 +15,13 @@ const Sidebar = () => {
     { name: "Family", message: "Dinner at 7?", time: "15 mins ago", online: false, status: "delivered" },
   ];
 
+  console.log("all chats", allIndividualChats);
+
   return (
-    <div className="w-1/5 bg-gray-800 text-white flex flex-col shadow-lg h-full">
+    <div className="w-1/4 bg-gray-800 text-white flex flex-col shadow-lg h-full">
       <SidebarHeader />
-      <div className="flex-1 overflow-y-auto py-4 space-y-4 scrollbar-thin">
-        <SidebarChatList title="Individual" allIndividualChats={individualChats} />
-        <div className="border-t border-gray-700 mt-4 pt-4"></div>
-        <SidebarChatList title="Individual" allIndividualChats={individualChats} />
+      <div className="flex-1 overflow-y-auto space-y-4 scrollbar-thin">
+        <SidebarChatList allChats={allIndividualChats} />
       </div>
     </div>
   );

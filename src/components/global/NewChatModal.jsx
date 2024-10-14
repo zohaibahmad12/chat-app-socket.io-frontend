@@ -1,20 +1,27 @@
 import { useState } from "react";
-import { FaSearch, FaTimes } from "react-icons/fa"; // Importing icons from react-icons
-import useFetch from "../../hooks/useFetch";
+import { FaSearch, FaTimes, FaExclamationCircle } from "react-icons/fa";
+import axios from "axios";
+import useUserStore from "../../store/useUserStore";
+import useChatStore from "../../store/useChatStore";
 const NewChatModal = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [users] = useState([
-    { name: "Ivan", email: "ivan@example.com", profilePic: "https://via.placeholder.com/40" },
-    { name: "Daniel", email: "daniel@example.com", profilePic: "https://via.placeholder.com/40" },
-    { name: "Vlad", email: "vlad@example.com", profilePic: "https://via.placeholder.com/40" },
-    { name: "Oleg", email: "oleg@example.com", profilePic: "https://via.placeholder.com/40" },
-  ]);
-
-  const handleSearch = (e) => {
+  const [searchResults, setSearchResults] = useState(null);
+  const sessionToken = useUserStore((state) => state.sessionToken);
+  const setAllIndividualChats = useChatStore((state) => state.setAllIndividualChats);
+  const allIndividualChats = useChatStore((state) => state.allIndividualChats);
+  const handleSearch = async (e) => {
     e.preventDefault();
-    const results = users.filter((user) => user.email.toLowerCase().includes(searchQuery.toLowerCase()));
-    setSearchResults(results);
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/find-by-email?email=${searchQuery}`, {
+        headers: {
+          Authorization: `Bearer ${sessionToken}`,
+        },
+      });
+      console.log("result", response);
+      setSearchResults(response.data.user);
+    } catch (error) {
+      setSearchResults({});
+    }
   };
 
   return (
@@ -30,20 +37,34 @@ const NewChatModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSearch}>
           <div className="relative mb-4">
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-            <input type="text" placeholder="Search by email..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full p-3 pl-10 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500" />
+            <input
+              type="text"
+              placeholder="Search by email..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full p-3 pl-10 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            />
           </div>
         </form>
-        <div className="mt-4">
-          {searchResults.map((user, index) => (
-            <div key={index} className="flex items-center p-3 bg-gray-800 text-white rounded mb-2 hover:bg-gray-700 cursor-pointer transition duration-200">
-              <img src={user.profilePic} alt={`${user.name}'s profile`} className="w-10 h-10 rounded-full mr-3" />
+        {searchResults && Object.keys(searchResults).length > 0 ? (
+          <div className="mt-4" onClick={() => setAllIndividualChats([...allIndividualChats, searchResults])}>
+            <div className="flex items-center p-3 bg-gray-800 text-white rounded mb-2 hover:bg-gray-700 cursor-pointer transition duration-200">
+              <img src="https://via.placeholder.com/40" alt={`${searchResults.name}'s profile`} className="w-10 h-10 rounded-full mr-3" />
               <div>
-                <div className="font-semibold">{user.name}</div>
-                <div className="text-gray-400">{user.email}</div>
+                <div className="font-semibold">{searchResults.name}</div>
+                <div className="text-gray-400">{searchResults.email}</div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          searchResults &&
+          Object.keys(searchResults).length === 0 && (
+            <div className="flex items-center mt-4 p-3 bg-red-600 text-white rounded">
+              <FaExclamationCircle className="mr-2" />
+              <span className="text-lg font-semibold">No user found</span>
+            </div>
+          )
+        )}
       </div>
     </div>
   );
