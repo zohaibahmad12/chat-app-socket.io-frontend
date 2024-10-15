@@ -6,15 +6,7 @@ const SidebarChatList = ({ allChats }) => {
     <div className="mb-4">
       <ul className="">
         {allChats.map((chat, index) => (
-          <SidebarChatItem
-            key={index}
-            name={chat.name}
-            message={chat.message}
-            time={"3 mins ago"}
-            unread={false}
-            activeStatus={chat.activeStatus}
-            sendStatus={"delivered"}
-          />
+          <SidebarChatItem key={index} chat={chat} />
         ))}
       </ul>
     </div>

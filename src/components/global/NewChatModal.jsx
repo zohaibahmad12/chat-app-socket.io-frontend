@@ -7,6 +7,7 @@ const NewChatModal = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState(null);
   const sessionToken = useUserStore((state) => state.sessionToken);
+  const user = useUserStore((state) => state.user);
   const setAllIndividualChats = useChatStore((state) => state.setAllIndividualChats);
   const allIndividualChats = useChatStore((state) => state.allIndividualChats);
   const handleSearch = async (e) => {
@@ -18,7 +19,12 @@ const NewChatModal = ({ isOpen, onClose }) => {
         },
       });
       console.log("result", response);
-      setSearchResults(response.data.user);
+      console.log("user", user);
+      if (response.data.user.email == user.email) {
+        setSearchResults({});
+      } else {
+        setSearchResults(response.data.user);
+      }
     } catch (error) {
       setSearchResults({});
     }
@@ -37,13 +43,7 @@ const NewChatModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSearch}>
           <div className="relative mb-4">
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search by email..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full p-3 pl-10 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500"
-            />
+            <input type="text" placeholder="Search by email..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full p-3 pl-10 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500" />
           </div>
         </form>
         {searchResults && Object.keys(searchResults).length > 0 ? (
