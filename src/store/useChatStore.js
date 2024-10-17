@@ -1,14 +1,12 @@
 import { create } from "zustand";
 
 const useChatStore = create((set) => ({
-  allIndividualChats: [],
-  allGroupChats: [],
   selectedChat: null,
-  isSelectedChatLoading: false,
-  setAllIndividualChats: (allIndividualChats) => set({ allIndividualChats }),
-  setAllGroupChats: (allGroupChats) => set({ allGroupChats }),
+  inbox: [],
+  selectedInbox: null,
   setSelectedChat: (selectedChat) => set({ selectedChat }),
-  setIsSelectedChatLoading: (isSelectedChatLoading) => set({ isSelectedChatLoading }),
+  setInbox: (inbox) => set({ inbox }),
+  setSelectedInbox: (selectedInbox) => set({ selectedInbox }),
 }));
 
 export default useChatStore;

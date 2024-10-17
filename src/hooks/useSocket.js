@@ -4,8 +4,8 @@ import useChatStore from "../store/useChatStore";
 import { socket } from "../socketConnection";
 const useSocket = () => {
   const setSocket = useUserStore((state) => state.setSocket);
-  const setAllIndividualChats = useChatStore((state) => state.setAllIndividualChats);
-  const allIndividualChats = useChatStore((state) => state.allIndividualChats);
+  const setInbox = useChatStore((state) => state.setInbox);
+  const inbox = useChatStore((state) => state.inbox);
 
   useEffect(() => {
     const onSocketConnect = () => {
@@ -17,12 +17,12 @@ const useSocket = () => {
     };
     const onNewUserConnected = ({ email }) => {
       console.log("new user connected", email);
-      const userIndex = allIndividualChats.findIndex((chat) => chat?.participant?.email === email);
-      console.log("all chats", allIndividualChats);
+      const userIndex = inbox.findIndex((chat) => chat?.participant?.email === email);
+      console.log("all chats", inbox);
       if (userIndex !== -1) {
-        const updatedIndividualChats = [...allIndividualChats];
+        const updatedIndividualChats = [...inbox];
         updatedIndividualChats[userIndex].participant.status = "online";
-        setAllIndividualChats(updatedIndividualChats);
+        setInbox(updatedIndividualChats);
       }
     };
 
@@ -35,7 +35,7 @@ const useSocket = () => {
       socket.off("disconnect", onSocketDisconnect);
       socket.off("newUserConnected", onNewUserConnected);
     };
-  }, [allIndividualChats, setAllIndividualChats, setSocket]);
+  }, [inbox, setInbox, setSocket]);
 };
 
 export default useSocket;

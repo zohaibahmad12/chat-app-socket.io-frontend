@@ -1,17 +1,35 @@
 import { FaCircle, FaCheck, FaCheckDouble } from "react-icons/fa";
 import useUserStore from "../../store/useUserStore";
 import useChatStore from "../../store/useChatStore";
+import axios from "axios";
 const SidebarChatItem = ({ chat }) => {
   const user = useUserStore((state) => state.user);
+  const sessionToken = useUserStore((state) => state.sessionToken);
   const setSelectedChat = useChatStore((state) => state.setSelectedChat);
-  const setIsSelectedChatLoading = useChatStore((state) => state.setIsSelectedChatLoading);
-  console.log("chat is", chat);
-  const handleChatClick = () => {
-    setIsSelectedChatLoading(false);
-    setSelectedChat({ ...chat });
+  const setSelectedInbox = useChatStore((state) => state.setSelectedInbox);
+
+  const handleChatClick = async () => {
+    const combinedId = [chat._id, user._id].sort().join("-");
+    setSelectedChat(null);
+    setSelectedInbox({ ...chat });
+
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/chat/get-chat?chatId=${combinedId}`, {
+        headers: {
+          Authorization: `Bearer ${sessionToken}`,
+        },
+      });
+      console.log("response", response);
+      setSelectedChat(response.data.chat);
+    } catch (error) {
+      setSelectedChat([]);
+    }
   };
   return (
-    <li onClick={handleChatClick} className="flex items-center w-full p-2 bg-gray-900 hover:bg-gray-700 transition duration-300 shadow-md border-t border-b border-gray-700">
+    <li
+      onClick={handleChatClick}
+      className="flex items-center w-full p-2 bg-gray-900 hover:bg-gray-700 transition duration-300 shadow-md border-t border-b border-gray-700"
+    >
       <div className="relative">
         <img src="https://via.placeholder.com/40" alt="Profile" className="rounded-full w-9 h-9 border-2 border-gray-700 shadow-md" />
         <FaCircle className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${chat.activeStatus == "online" ? "text-green-400" : "text-gray-500"}`} />

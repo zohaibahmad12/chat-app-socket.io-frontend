@@ -8,8 +8,8 @@ const NewChatModal = ({ isOpen, onClose }) => {
   const [searchResults, setSearchResults] = useState(null);
   const sessionToken = useUserStore((state) => state.sessionToken);
   const user = useUserStore((state) => state.user);
-  const setAllIndividualChats = useChatStore((state) => state.setAllIndividualChats);
-  const allIndividualChats = useChatStore((state) => state.allIndividualChats);
+  const setInbox = useChatStore((state) => state.setInbox);
+  const inbox = useChatStore((state) => state.inbox);
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
@@ -43,11 +43,17 @@ const NewChatModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSearch}>
           <div className="relative mb-4">
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-            <input type="text" placeholder="Search by email..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full p-3 pl-10 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500" />
+            <input
+              type="text"
+              placeholder="Search by email..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full p-3 pl-10 bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            />
           </div>
         </form>
         {searchResults && Object.keys(searchResults).length > 0 ? (
-          <div className="mt-4" onClick={() => setAllIndividualChats([...allIndividualChats, searchResults])}>
+          <div className="mt-4" onClick={() => setInbox([...inbox, searchResults])}>
             <div className="flex items-center p-3 bg-gray-800 text-white rounded mb-2 hover:bg-gray-700 cursor-pointer transition duration-200">
               <img src="https://via.placeholder.com/40" alt={`${searchResults.name}'s profile`} className="w-10 h-10 rounded-full mr-3" />
               <div>
